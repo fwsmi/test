@@ -3,26 +3,28 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ph</title>
+<title>sami</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<!-- Bold techy font -->
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
 
 <style>
 :root {
-  --bg: #050505;
-  --card: rgba(20,20,20,0.75);
-  --border: rgba(255,255,255,0.08);
-  --accent: #ff6b6b;
-  --text: #e5e5e5;
-  --muted: #9ca3af;
+  --bg: #000;
+  --card: rgba(20,20,20,0.85);
+  --border: #fff;
+  --accent: #fff;
+  --text: #fff;
+  --muted: #ccc;
+  --glow: rgba(255,255,255,0.6);
 }
 
-* { box-sizing: border-box; font-family: Inter, sans-serif; }
+* { box-sizing: border-box; font-family: 'Orbitron', sans-serif; }
 
 body {
   margin: 0;
   min-height: 100vh;
-  background: #000;
+  background: var(--bg);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -41,17 +43,20 @@ canvas {
 .card {
   position: relative;
   z-index: 2;
-  width: 520px;
+  width: 620px;
   background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 18px;
-  padding: 22px;
+  border: 2px solid var(--border);
+  border-radius: 20px;
+  padding: 30px;
   display: flex;
-  gap: 20px;
-  backdrop-filter: blur(14px);
-  box-shadow: 0 0 50px rgba(0,0,0,0.9);
-  transition: transform 0.1s ease;
+  gap: 25px;
+  backdrop-filter: blur(16px);
+  box-shadow: 0 0 60px rgba(255,255,255,0.2);
+  transition: transform 0.15s ease, box-shadow 0.3s ease;
   transform-style: preserve-3d;
+}
+.card:hover {
+  box-shadow: 0 0 80px var(--glow);
 }
 
 /* PFP */
@@ -60,31 +65,62 @@ canvas {
 }
 
 .pfp {
-  width: 92px;
-  height: 92px;
+  width: 100px;
+  height: 100px;
   border-radius: 50%;
   object-fit: cover;
-  border: 2px solid var(--accent);
+  border: 2px solid var(--border);
 }
 
+/* Badges */
 .badges {
   position: absolute;
   right: -10px;
-  bottom: -6px;
+  bottom: -10px;
   display: flex;
-  gap: 6px;
+  gap: 8px;
 }
 
 .badge {
-  width: 20px;
-  height: 20px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   background: #111;
   border: 1px solid var(--border);
   display: flex;
   align-items: center;
   justify-content: center;
+  font-size: 16px;
+  color: var(--text);
+  cursor: pointer;
+  position: relative;
+  transition: all 0.25s ease;
+}
+.badge:hover {
+  box-shadow: 0 0 12px var(--glow);
+}
+
+/* Tooltip */
+.badge span {
+  visibility: hidden;
+  width: max-content;
+  background-color: var(--bg);
+  color: var(--text);
+  text-align: center;
+  padding: 4px 8px;
+  border-radius: 6px;
+  position: absolute;
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%);
   font-size: 12px;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+.badge:hover span {
+  visibility: visible;
+  opacity: 1;
 }
 
 /* CONTENT */
@@ -93,52 +129,82 @@ canvas {
 .name-row {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
 }
 
-h1 { font-size: 20px; margin: 0; }
+h1 {
+  font-size: 24px;
+  margin: 0;
+}
 
+/* Typewriter username */
 .username {
   color: var(--accent);
-  font-size: 14px;
+  font-size: 16px;
+  overflow: hidden;
+  border-right: .15em solid var(--accent);
+  white-space: nowrap;
+  letter-spacing: 2px;
+  animation: typing 2s steps(10, end), blink-caret .75s step-end infinite;
+}
+
+@keyframes typing {
+  from { width: 0 }
+  to { width: 80px }
+}
+@keyframes blink-caret {
+  50% { border-color: transparent }
 }
 
 .bio {
-  margin: 8px 0 14px;
+  margin: 10px 0 16px;
   color: var(--muted);
-  font-size: 14px;
+  font-size: 15px;
 }
 
 .links {
   display: flex;
-  gap: 10px;
+  gap: 12px;
 }
 
-.link {
-  padding: 8px 14px;
-  border-radius: 10px;
-  border: 1px solid var(--border);
-  background: rgba(255,255,255,0.03);
+/* Discord Icon Link */
+.link-icon {
+  font-size: 24px;
   color: var(--text);
-  text-decoration: none;
-  font-size: 13px;
-  transition: 0.2s;
+  transition: 0.3s;
 }
-
-.link:hover {
-  background: rgba(255,255,255,0.08);
-  border-color: var(--accent);
-  box-shadow: 0 0 12px rgba(255,107,107,0.4);
+.link-icon:hover {
+  color: var(--glow);
+  transform: scale(1.2);
 }
 
 /* VIEW COUNTER */
 .views {
-  margin-top: 12px;
-  font-size: 12px;
+  margin-top: 14px;
+  font-size: 13px;
   color: var(--muted);
   display: flex;
   align-items: center;
   gap: 6px;
+}
+
+/* Music Toggle */
+#musicBtn {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 8px 14px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 14px;
+  backdrop-filter: blur(12px);
+  transition: 0.3s;
+}
+#musicBtn:hover {
+  box-shadow: 0 0 16px var(--glow);
 }
 </style>
 </head>
@@ -148,40 +214,48 @@ h1 { font-size: 20px; margin: 0; }
 
 <div class="card" id="card">
   <div class="pfp-wrap">
-    <img class="pfp" src="https://i.imgur.com/yourpfp.png">
+    <img class="pfp" src="https://media.discordapp.net/attachments/1459586271579213966/1461425361148448982/6c6d4ceac131b427d413aca74e5516eb.jpg?ex=696a81ee&is=6969306e&hm=86b0b7ac9a00770bcf81d7b31de0bad77278e17be3c25082c58e68702758fc16&=&format=webp">
     <div class="badges">
-      <div class="badge">🔥</div>
-      <div class="badge">✔</div>
-      <div class="badge">☠</div>
+      <div class="badge">
+        <:q_1:1354012185059131402>
+        <span>Owner</span>
+      </div>
+      <div class="badge">
+        <:white_sheild:1355511246962692136>
+        <span>Admin</span>
+      </div>
     </div>
   </div>
 
   <div class="content">
     <div class="name-row">
-      <h1>ph</h1>
-      <span class="username">@ph</span>
+      <h1>sami</h1>
+      <span class="username">sami</span>
     </div>
 
     <p class="bio">x</p>
 
     <div class="links">
-      <a class="link" href="#">Discord</a>
-      <a class="link" href="#">GitHub</a>
-      <a class="link" href="#">X</a>
+      <a class="link-icon" href="https://discord.com/users/830608755766591508" target="_blank" title="Discord">
+        <:716333discord:1461424834259976293>
+      </a>
     </div>
 
     <div class="views">
-      👁️ <span id="viewCount">0</span> views
+       <span id="viewCount">0</span> views
     </div>
   </div>
 </div>
+
+<button id="musicBtn">Pause Music</button>
+<audio id="bgMusic" src="https://foldr.space/f/1wIlosdODZ23bhMu" autoplay loop></audio>
 
 <script>
 /* CARD TILT */
 const card = document.getElementById("card");
 document.addEventListener("mousemove", e => {
-  const x = (window.innerWidth / 2 - e.clientX) / 25;
-  const y = (window.innerHeight / 2 - e.clientY) / 25;
+  const x = (window.innerWidth / 2 - e.clientX) / 20;
+  const y = (window.innerHeight / 2 - e.clientY) / 20;
   card.style.transform = `rotateY(${x}deg) rotateX(${y}deg)`;
 });
 
@@ -191,7 +265,20 @@ views++;
 localStorage.setItem("views", views);
 document.getElementById("viewCount").textContent = views;
 
-/* STAR LINES */
+/* MUSIC TOGGLE */
+const music = document.getElementById("bgMusic");
+const btn = document.getElementById("musicBtn");
+btn.addEventListener("click", () => {
+  if (music.paused) {
+    music.play();
+    btn.textContent = "Pause Music";
+  } else {
+    music.pause();
+    btn.textContent = "Play Music";
+  }
+});
+
+/* STAR PARTICLES */
 const canvas = document.getElementById("stars");
 const ctx = canvas.getContext("2d");
 let w, h, stars;
@@ -199,34 +286,29 @@ let w, h, stars;
 function resize() {
   w = canvas.width = window.innerWidth;
   h = canvas.height = window.innerHeight;
-  stars = Array.from({ length: 80 }, () => ({
+  stars = Array.from({ length: 120 }, () => ({
     x: Math.random() * w,
     y: Math.random() * h,
-    speed: Math.random() * 1.5 + 0.5,
-    length: Math.random() * 80 + 40
+    speed: Math.random() * 1.2 + 0.2,
+    radius: Math.random() * 1.5 + 0.5
   }));
 }
 
 function draw() {
   ctx.clearRect(0, 0, w, h);
-  ctx.strokeStyle = "rgba(255,255,255,0.15)";
-  ctx.lineWidth = 1;
-
   stars.forEach(s => {
     ctx.beginPath();
-    ctx.moveTo(s.x, s.y);
-    ctx.lineTo(s.x + s.length, s.y + s.length);
-    ctx.stroke();
-
+    ctx.arc(s.x, s.y, s.radius, 0, Math.PI * 2);
+    ctx.fillStyle = "rgba(255,255,255,0.2)";
+    ctx.fill();
     s.x += s.speed;
-    s.y += s.speed;
+    s.y += s.speed * 0.5;
 
     if (s.x > w || s.y > h) {
-      s.x = Math.random() * -200;
-      s.y = Math.random() * -200;
+      s.x = Math.random() * -50;
+      s.y = Math.random() * -50;
     }
   });
-
   requestAnimationFrame(draw);
 }
 
