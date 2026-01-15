@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ph</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --bg: #050505;
+  --card: rgba(20,20,20,0.75);
+  --border: rgba(255,255,255,0.08);
+  --accent: #ff6b6b;
+  --text: #e5e5e5;
+  --muted: #9ca3af;
+}
+
+* { box-sizing: border-box; font-family: Inter, sans-serif; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text);
+  overflow: hidden;
+}
+
+/* STAR BACKGROUND */
+canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+}
+
+/* CARD */
+.card {
+  position: relative;
+  z-index: 2;
+  width: 520px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 22px;
+  display: flex;
+  gap: 20px;
+  backdrop-filter: blur(14px);
+  box-shadow: 0 0 50px rgba(0,0,0,0.9);
+  transition: transform 0.1s ease;
+  transform-style: preserve-3d;
+}
+
+/* PFP */
+.pfp-wrap {
+  position: relative;
+}
+
+.pfp {
+  width: 92px;
+  height: 92px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--accent);
+}
+
+.badges {
+  position: absolute;
+  right: -10px;
+  bottom: -6px;
+  display: flex;
+  gap: 6px;
+}
+
+.badge {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #111;
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+}
+
+/* CONTENT */
+.content { flex: 1; }
+
+.name-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+h1 { font-size: 20px; margin: 0; }
+
+.username {
+  color: var(--accent);
+  font-size: 14px;
+}
+
+.bio {
+  margin: 8px 0 14px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.links {
+  display: flex;
+  gap: 10px;
+}
+
+.link {
+  padding: 8px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,0.03);
+  color: var(--text);
+  text-decoration: none;
+  font-size: 13px;
+  transition: 0.2s;
+}
+
+.link:hover {
+  background: rgba(255,255,255,0.08);
+  border-color: var(--accent);
+  box-shadow: 0 0 12px rgba(255,107,107,0.4);
+}
+
+/* VIEW COUNTER */
+.views {
+  margin-top: 12px;
+  font-size: 12px;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+</style>
+</head>
+<body>
+
+<canvas id="stars"></canvas>
+
+<div class="card" id="card">
+  <div class="pfp-wrap">
+    <img class="pfp" src="https://i.imgur.com/yourpfp.png">
+    <div class="badges">
+      <div class="badge">🔥</div>
+      <div class="badge">✔</div>
+      <div class="badge">☠</div>
+    </div>
+  </div>
+
+  <div class="content">
+    <div class="name-row">
+      <h1>ph</h1>
+      <span class="username">@ph</span>
+    </div>
+
+    <p class="bio">x</p>
+
+    <div class="links">
+      <a class="link" href="#">Discord</a>
+      <a class="link" href="#">GitHub</a>
+      <a class="link" href="#">X</a>
+    </div>
+
+    <div class="views">
+      👁️ <span id="viewCount">0</span> views
+    </div>
+  </div>
+</div>
+
+<script>
+/* CARD TILT */
+const card = document.getElementById("card");
+document.addEventListener("mousemove", e => {
+  const x = (window.innerWidth / 2 - e.clientX) / 25;
+  const y = (window.innerHeight / 2 - e.clientY) / 25;
+  card.style.transform = `rotateY(${x}deg) rotateX(${y}deg)`;
+});
+
+/* VIEW COUNTER */
+let views = localStorage.getItem("views") || 0;
+views++;
+localStorage.setItem("views", views);
+document.getElementById("viewCount").textContent = views;
+
+/* STAR LINES */
+const canvas = document.getElementById("stars");
+const ctx = canvas.getContext("2d");
+let w, h, stars;
+
+function resize() {
+  w = canvas.width = window.innerWidth;
+  h = canvas.height = window.innerHeight;
+  stars = Array.from({ length: 80 }, () => ({
+    x: Math.random() * w,
+    y: Math.random() * h,
+    speed: Math.random() * 1.5 + 0.5,
+    length: Math.random() * 80 + 40
+  }));
+}
+
+function draw() {
+  ctx.clearRect(0, 0, w, h);
+  ctx.strokeStyle = "rgba(255,255,255,0.15)";
+  ctx.lineWidth = 1;
+
+  stars.forEach(s => {
+    ctx.beginPath();
+    ctx.moveTo(s.x, s.y);
+    ctx.lineTo(s.x + s.length, s.y + s.length);
+    ctx.stroke();
+
+    s.x += s.speed;
+    s.y += s.speed;
+
+    if (s.x > w || s.y > h) {
+      s.x = Math.random() * -200;
+      s.y = Math.random() * -200;
+    }
+  });
+
+  requestAnimationFrame(draw);
+}
+
+window.addEventListener("resize", resize);
+resize();
+draw();
+</script>
+
+</body>
+</html>
